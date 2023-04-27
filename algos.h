@@ -72,7 +72,7 @@ void bellman_ford(const std::vector<std::vector<int>>& graph, const int v, const
         shortest_pt_set[i] = false;
     }
     distance[source] = 0;
-
+    int u=0; // TEMP TEMP TEMP
     // select u somehow
 
     for (int i = 0; i < (v-1); i++) {

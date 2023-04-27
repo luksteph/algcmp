@@ -7,19 +7,20 @@ using namespace std;
 
 struct userInput {
     char c, i, a, n;
-    short short int s;
+    short int s;
 };
+
 void welcome();
 void test_cases(); // temp
-void input_handler();
+void input_handler(userInput input);
 
 int main() {
     test_cases();
-    
-    userInput input;
+
+    // User Interface
     enum a {INIT, INPUT_TYPE, ALGO_TYPE, NEXT_ACTION, EXIT, CONFIRM_EXIT};
-    
-    input.c = INIT;
+    userInput input{INIT};
+
     while (input.c != CONFIRM_EXIT) {
         switch (input.c) {
             case INIT: {
@@ -31,55 +32,78 @@ int main() {
             }
 
             case INPUT_TYPE: {
-                cout << "Would you like to generate or input a graph?\n"
+                cout << "Would you like to generate or input a graph?\n";
                 cout << "i = Input Your Own\n" << "g = Generate a Graph\n";
                 cout << "> ";
                 cin >> input.i;
-                if (toLower(input.i) == 'i') cout << "Input mode selected!";
-                else if (toLower(input.i) == 'g') cout << "Generate mode selected!";
-                else if (toLower(input.i) == 'x') input.c = EXIT;
-                else {
-                    cout << "Invalid input type selection.\n"
-                    input.c = INPUT_TYPE; // may be redundant
-                    input.i = '\0'; // reset
-                    break;
-                }
-                input.c = ALGO_TYPE;
-                break;
-            }
-            case ALGO_TYPE: {
-                cout << "Which algorithm would you like to use?\n";
-                cout << "d = Dijkstra's\n" << "a = A*\n" << "b = Bellman-Ford\n";
-                cout << "> ";
-                cin >> input.a;
-                switch (toLower(input.a)) {
-                    case 'd': {
-                        cout << "Dijkstra's selected!\n";
-                        input_handler(input);
+
+                switch (tolower(input.i)) {
+                    case 'i': {
+                        cout << "Input mode selected!\n";
+                        input.c = ALGO_TYPE;
                         break;
                     }
-                    case 'a': {
-                        cout << "A* selected!\n";
-                        input_handler(input);
-                        break;
-                    }
-                    case 'b': {
-                        cout << "Bellman-Ford selected!\n";
-                        input_handler(input);
+                    case 'g': {
+                        cout << "Generate mode selected!\n";
+                        input.c = ALGO_TYPE;
                         break;
                     }
                     case 'x': {
-                        input.c = INPUT_TYPE;
-                        input.a = '\0'; // reset algo choice
+                        input.c = EXIT;
                         break;
                     }
                     default: {
-                        cout << "Invalid algorithm selection.\n"
-                        input.c = ALGO_TYPE;
-                        input.a = '\0'; // reset algo choice
+                        cout << "Invalid input type selection.\n";
+                        input.c = INPUT_TYPE; // may be redundant
+                        input.i = '\0'; // reset
                         break;
                     }
                 }
+                break;
+            }
+            case ALGO_TYPE: {
+                if (input.n != 'g')
+                {
+                    cout << "Which algorithm would you like to use?\n";
+                    cout << "d = Dijkstra's\n" << "a = A*\n" << "b = Bellman-Ford\n";
+                    cout << "> ";
+                    cin >> input.a;
+
+                    switch (tolower(input.a)) {
+                        case 'd': {
+                            cout << "Dijkstra's selected!\n";
+                            input_handler(input);
+                            break;
+                        }
+                        case 'a': {
+                            cout << "A* selected!\n";
+                            input_handler(input);
+                            break;
+                        }
+                        case 'b': {
+                            cout << "Bellman-Ford selected!\n";
+                            input_handler(input);
+                            break;
+                        }
+                        case 'x': {
+                            input.c = INPUT_TYPE;
+                            input.a = '\0'; // reset algo choice
+                            break;
+                        }
+                        default: {
+                            cout << "Invalid algorithm selection.\n";
+                            input.c = ALGO_TYPE;
+                            input.a = '\0'; // reset algo choice
+                            break;
+                        }
+                    }
+                }
+
+                else {
+                    input_handler(input);
+                }
+
+                input.c = NEXT_ACTION;
                 break;
             }
             case NEXT_ACTION: {
@@ -91,7 +115,7 @@ int main() {
                 else if (input.n == 'a') input.c = ALGO_TYPE;
                 else if (input.n == 'x') input.c = EXIT;
                 else {
-                    cout << "Invalid action.\n"
+                    cout << "Invalid action.\n";
                     input.c = NEXT_ACTION; // may be redundant
                     input.n = '\0'; // reset
                     break;
@@ -101,8 +125,8 @@ int main() {
             case EXIT: {
                 cout << "Type x to confirm exit, or any other character to return.\n";
                 cout << "> ";
-                cin >> c;
-                if (toLower(c) == 'x') {
+                cin >> input.c;
+                if (tolower(input.c) == 'x') {
                     input.c = CONFIRM_EXIT;
                 }
                 else {
@@ -150,15 +174,31 @@ void input_handler(userInput input) {
     cout << input.i << input.a; // c, n is unused in this handler
 
     if (input.i == 'g') {
-        cout << "Input a number of vertices for the graph [1, 20].";
-        cout << "Any values outside this range will randomize the size of the graph within [1, 20]."
+        cout << "Input a number of vertices for the graph in the interval [1, 20].\n";
+        cout << "Any values outside this range will randomize the size of the graph within [1, 20].\n";
+        cout << "> ";
+        cin >> input.s;
+        if (input.s >= 1 && input.s <= 20) {
+            Graph g(input.s);
+        }
         //handle that.
+
     }
     else {
-        cout << "Input a number of vertices for the graph [1, 20].";
-        //validate that
+        cout << "Input a number of vertices for the graph in the interval [1, 20].\n";
+        cout << "> ";
         cin >> input.s;
-        Graph g(input.s);
-        
+        if (input.s >= 1 && input.s <= 20) {
+            Graph g(input.s);
+            
+
+            input.c = 3; // NEXT_ACTION
+        }
+        else {
+            cout << "Invalid vertex count!\n";
+            // return to input type
+            input.n = 'g';
+            input.c = 1; // aka INPUT_TYPE
+        }
     }
 }
