@@ -160,17 +160,17 @@ void welcome() {
 
 void test_cases() {
     cout << "debugs:test0";
-    Graph myFirstGraph = Graph(10);
+    Graph myFirstGraph = Graph(4);
     int t = myFirstGraph.get_count();
     cout << "\n# of vtxs: " << t;
     myFirstGraph.print_graph();
 
     cout << '\n' << "dijkstra's!!\n";
-    /*myFirstGraph.set_edge(3, 0, 1); myFirstGraph.set_edge(11, 0, 2);
+    myFirstGraph.set_edge(3, 0, 1); myFirstGraph.set_edge(11, 0, 2);
     myFirstGraph.set_edge(2, 0, 3); myFirstGraph.set_edge(7, 1, 2);
     myFirstGraph.set_edge(4, 2, 3);
     myFirstGraph.print_graph();
-    */
+    /*
     myFirstGraph.set_edge(2, 0, 1);
     myFirstGraph.set_edge(3, 0, 2);
     myFirstGraph.set_edge(1, 1, 3);
@@ -186,8 +186,12 @@ void test_cases() {
     myFirstGraph.set_edge(4, 6, 8);
     myFirstGraph.set_edge(3, 6, 9);
     myFirstGraph.print_graph();
-
+*/
     dijkstra(myFirstGraph, 0);
+    cout << '\n';
+    myFirstGraph.print_graph();
+    cout << '\n';
+    bellman_ford(myFirstGraph, 0);
 
 }
                     

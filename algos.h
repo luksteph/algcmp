@@ -69,7 +69,65 @@ void a_star(const std::vector<std::vector<int>>& graph, const std::vector<int>& 
 // END A*
 
 // Bellman-Ford Start
-void bellman_ford(const std::vector<std::vector<int>>& graph, const int v, const int e, const int source) {
+void bellman_ford(Graph& graph, const int source) {
+    cout << "Bellman-Ford Algorithm started!\n";
+    // setup
+    vector<long long> dist(graph.get_count(), LLONG_MAX); // Initialize all vertices as infinitely far from source
+    dist[source] = 0; // Set source's distance from the source to 0
+
+    for (int u = 0; u < graph.get_count(); u++) { // For every vertex u in graph
+        for (int v = 0; v < graph.get_count(); v++) { // For every edge connected to the currently selected vertex u,
+            int weight = graph.get_edge(u, v);  // set weight equal to current edge length
+            if ((dist[u] != LLONG_MAX) && (dist[u] + weight < dist[v])) {
+                dist[v] = dist[u] + weight;
+            }
+        }
+    }
+
+    // Check for negative cycles
+    for (int u = 0; u < graph.get_count(); u++) { // For every vertex u in graph
+        for (int v = 0; v < graph.get_count(); v++) { // For every edge connected to the currently selected vertex u,
+            int weight = graph.get_edge(u, v);  // set weight equal to current edge length
+            if ((dist[u] != LLONG_MAX) && (dist[u] + weight < dist[v])) {
+                cout << "Negative cycle detected!\n";
+                return;
+            }
+        }
+    }
+
+    // Print the distances
+    for (int i = 0; i < graph.get_count(); i++) {
+        cout << "Distance from source to vertex " << i << " is " << dist[i] << '\n';
+    }
+}
+
+/*void b2(Graph& graph, const int source) {
+    cout << "Bellman-Ford Algorithm started!\n";
+    // setup
+    vector<int> dist(graph.get_count(), INT_MAX); // Initialize all vertices as infinitely far from source
+    dist[source] = 0; // Set source's distance from the source to 0
+
+    for (int u = 0; u < graph.get_count(); u++) { // For every vertex u in graph
+
+        for (int v = 0; v < graph.get_count(); v++) { // For every edge connected to the currently selected vertex u,
+            int weight = graph.get_edge(u, v);  // set weight equal to current edge length
+            if ((dist[u] != INF) && (dist[u] + weight < dist[v])) {
+                dist[v] = dist[u] + weight;
+                cout << " distv: " << dist[v] << '\n';
+            }
+        }
+    }
+    for (int i = 0; i < graph.get_count(); i++) {
+        if (i != source) {
+        dist[i] += INF;
+        dist[i] += 2;
+        }
+    }
+    printArr(dist, graph.get_count());
+}
+
+
+void b3(const std::vector<std::vector<int>>& graph, const int v, const int e, const int source) {
     // Declare and initialize distance and shortest path set
     vector<int> distance(v);
     bool shortest_pt_set[v];
@@ -90,5 +148,5 @@ void bellman_ford(const std::vector<std::vector<int>>& graph, const int v, const
     printArr(distance, v);
 }
 // END Bellman-Ford
-
+*/
 #endif //algos
