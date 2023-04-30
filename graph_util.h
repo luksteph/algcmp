@@ -1,17 +1,19 @@
 #ifndef INC_230FINAL_GRAPH_UTIL_H
 #define INC_230FINAL_GRAPH_UTIL_H
+#define INF INT_MAX
 using namespace std;
 
 class Graph {
 private:
-    int vertex_count;
+    int vertex_count = 0;
     vector <vector <int>> adj_mtx; //declare a 2d adjacency matrix
 public:
-    Graph(int n);                               // constructor
+    explicit Graph(int n);                               // constructor
     bool adjmtx_init();                         // fill adjacency matrix with infinite edge lengths
-    bool adjmtx_rand(int seed);
+    bool adjmtx_rand(int seed) const;
     bool set_edge(int length, int x, int y);    // setter for edge length
     int get_count();                            // retrieve vertex count
+    int get_edge(int r, int c);
     void print_graph();                         // Print out generalized graph
     ~Graph();
 };
@@ -56,7 +58,7 @@ bool Graph::adjmtx_init() { // Initialize adjacency matrix with all values infin
     else return false;
 }
 
-bool Graph::adjmtx_rand(int seed) { // Fill adjacency matrix with all values randomized
+bool Graph::adjmtx_rand(int seed) const { // Fill adjacency matrix with all values randomized
     srand(seed);
     int random = rand();
     cout << random;
@@ -76,6 +78,10 @@ void Graph::print_graph() {
         }
         cout << endl;
     }
+}
+
+int Graph::get_edge(int r, int c){
+    return adj_mtx[r][c];
 }
 
 Graph::~Graph() {
