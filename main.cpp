@@ -16,7 +16,7 @@ void input_handler(userInput input);
 
 int main() {
     test_cases();
-
+    exit(0); // temp
     // User Interface
     enum a {INIT, INPUT_TYPE, ALGO_TYPE, NEXT_ACTION, EXIT, CONFIRM_EXIT};
     userInput input{INIT};
@@ -160,14 +160,35 @@ void welcome() {
 
 void test_cases() {
     cout << "debugs:test0";
-    Graph myFirstGraph = Graph(3);
+    Graph myFirstGraph = Graph(10);
     int t = myFirstGraph.get_count();
-    cout << t;
-    bool b = myFirstGraph.set_edge(5000, 0, 0);
-    cout << b;
+    cout << "\n# of vtxs: " << t;
     myFirstGraph.print_graph();
-    myFirstGraph.adjmtx_rand(3);
+
+    cout << '\n' << "dijkstra's!!\n";
+    /*myFirstGraph.set_edge(3, 0, 1); myFirstGraph.set_edge(11, 0, 2);
+    myFirstGraph.set_edge(2, 0, 3); myFirstGraph.set_edge(7, 1, 2);
+    myFirstGraph.set_edge(4, 2, 3);
     myFirstGraph.print_graph();
+    */
+    myFirstGraph.set_edge(2, 0, 1);
+    myFirstGraph.set_edge(3, 0, 2);
+    myFirstGraph.set_edge(1, 1, 3);
+    myFirstGraph.set_edge(4, 1, 4);
+    myFirstGraph.set_edge(2, 2, 3);
+    myFirstGraph.set_edge(5, 2, 5);
+    myFirstGraph.set_edge(3, 3, 4);
+    myFirstGraph.set_edge(4, 3, 5);
+    myFirstGraph.set_edge(5, 3, 6);
+    myFirstGraph.set_edge(1, 4, 6);
+    myFirstGraph.set_edge(2, 5, 7);
+    myFirstGraph.set_edge(1, 6, 7);
+    myFirstGraph.set_edge(4, 6, 8);
+    myFirstGraph.set_edge(3, 6, 9);
+    myFirstGraph.print_graph();
+
+    dijkstra(myFirstGraph, 0);
+
 }
                     
 void input_handler(userInput input) {

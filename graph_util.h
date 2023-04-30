@@ -25,18 +25,18 @@ Graph::Graph(int n) { // Constructor with parameters
 }
 
 int Graph::get_count() { // getter for vertex count
-    cout << "test4";
     return vertex_count;
 }
 
-bool Graph::set_edge(int length, int x, int y) { // x is which col, y is which row
+bool Graph::set_edge(int length, int r, int c) { // x is which col, y is which row
     // format length var
     if (length > 999) length = 999;
-    else if (length < 0) length = 0;
-
+    if (length < 0) length = 0;
+    cout << "\n" << length << "\n";
     // set edge, return true if it worked
-    if (x >= y && x < vertex_count && y < vertex_count) {
-        adj_mtx[y][x] = length;
+    if (c >= r && c < vertex_count && r < vertex_count) {
+        adj_mtx[r][c] = length;
+        adj_mtx[c][r] = length;
         return true;
     }
     else return false;

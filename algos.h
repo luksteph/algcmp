@@ -9,13 +9,14 @@
 // Helper Functions and Definitions
 typedef pair<int, int> intpair;
 
-std::vector<int> get_adj_vert(Graph graph, int v) {
+std::vector<int> get_adj_vert(Graph& graph, int v, vector<bool> &visited) {
     std::vector<int> adj_vert;
+    cout << "\nadj_vtx: ";
     for (int i = 0; i < graph.get_count(); i++) {
-        if (graph.get_edge(v, i) < INF) adj_vert.push_back(i);
+        if (graph.get_edge(v, i) < INF && !visited[i]) {adj_vert.push_back(i);
+        cout << i << ' ';}
     }
-
-
+    cout << '\n';
     return adj_vert;
 }
 
@@ -31,7 +32,8 @@ void printArr(vector<int> dist, int n)
 void dijkstra (Graph& graph, const int source) { // O(nlogn)
     cout << "Dijkstra's Algorithm started!\n";
     //  setup
-    vector<int> dist(graph.get_count(), INT_MAX); std::priority_queue<intpair, std::vector<intpair>, std::greater<intpair>> q;
+    vector<int> dist(graph.get_count(), INT_MAX); std::priority_queue<intpair, std::vector<intpair>, std::greater<>> q;
+    vector<bool> visited(graph.get_count(), false);
     q.emplace(0, source);
     dist[source] = 0;
 
@@ -42,7 +44,9 @@ void dijkstra (Graph& graph, const int source) { // O(nlogn)
 
     while (!q.empty()) {    // O(logn)
         int u = q.top().second; // u is selected vertex
-        std::vector<int> adj_vert_list = get_adj_vert(graph,u); // create a list of vertices that are adjacent to the selected one O(n)
+        cout << "\nu: " << u;
+        visited[u] = true;
+        std::vector<int> adj_vert_list = get_adj_vert(graph, u, visited); // create a list of vertices that are adjacent to the selected one O(n)
 
         for (int v: adj_vert_list) {   // for each vertex listed in adj_vert_list O(n)
             int weight = graph.get_edge(u, v);
@@ -86,87 +90,5 @@ void bellman_ford(const std::vector<std::vector<int>>& graph, const int v, const
     printArr(distance, v);
 }
 // END Bellman-Ford
-
-/* previous dijkstra implementations
-#include <iostream>
-#include <vector>
-#include <queue>
-#include <climits>
-
-using namespace std;
-
-typedef pair<int, int> pii; // typedef for readability
-
-vector<int> dijkstra(vector<vector<pii>>& graph, int start) {
-    vector<int> dist(graph.size(), INT_MAX);
-    dist[start] = 0;
-
-    priority_queue<pii, vector<pii>, greater<pii>> pq; // min-heap priority queue
-    pq.push({0, start});
-
-    while (!pq.empty()) {
-        int u = pq.top().second;    // set u equal to the index of the vertex at the top of the queue
-        pq.pop();                   // remove from top of the queue (ignorable tbh)
-
-        for (auto& edge : graph[u]) { // for every vertex in the column assigned to the vertex at the top of the queue
-            int v = edge.first;             // set v equal to the index of the vertex
-            int weight = edge.second;       // set weight equal to the length of the edge between the vertex at the top of the queue and the currently selected vertex in the loop
-
-            if (dist[u] + weight < dist[v]) {   // if the distance from the source to the vertex at the top of the queue, plus the weight of the edge spanning that vertex and the currently selected vertex in the loop is less than the distance from the source to the currently selected vertex
-                dist[v] = dist[u] + weight;     // update the dist from source to selected to that ^
-                pq.push({dist[v], v});          // insert vertex v and its distance from the source into the priority queue
-            }
-        }
-    }
-
-    return dist; // return the vector of distances from the source, in 'alphabetical' order of vertices (vtx 0 first, vtx n last)
-}
-
- int find_closest_pt(const int distance[], const bool shortest_pt_set[], const int n) {
-
-    // Initialize min value
-    int min = INF, min_index;
-
-    for (int v = 0; v < n; v++)
-        if (!shortest_pt_set[v] && distance[v] <= min)
-            min = distance[v], min_index = v;
-
-    return min_index;
-}
-
-void dijkstra(const std::vector<std::vector<int>>& graph, const int n, const int source) {
-    // Declare and initialize distance and shortest path set
-    int distance[n]; bool shortest_pt_set[n];
-    for (int i = 0; i < n; i++) {
-        distance[i] = INF; shortest_pt_set[i] = false;
-    }
-    distance[source] = 0;
-
-    for (int i = 0; i < (n-1); i++) {
-        // Pick the minimum distance vertex from the set of
-        // vertices not yet processed. u is always equal to
-        // src in the first iteration.
-        int closest_pt = find_closest_pt(distance, shortest_pt_set, n);
-
-        // Mark the picked vertex as processed
-        shortest_pt_set[closest_pt] = true;
-
-        // Update dist value of the adjacent vertices of the
-        // picked vertex.
-        for (int j = 0; j < n; j++)
-
-            // Update dist[v] only if is not in sptSet,
-            // there is an edge from u to v, and total
-            // weight of path from src to  v through u is
-            // smaller than current value of dist[v]
-            if (!shortest_pt_set[j] && graph[closest_pt][j]
-                && distance[closest_pt] != INF
-                && distance[closest_pt] + graph[closest_pt][j] < distance[j])
-                distance[j] = distance[closest_pt] + graph[closest_pt][j];
-    }
-    printArr(distance, n);
-}
-
-*/
 
 #endif //algos
