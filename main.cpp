@@ -5,20 +5,20 @@
 #include "graph_util.h"
 using namespace std;
 
-struct userInput {
-    char c, i, a, n;
-    short int s;
-};
+
 
 void welcome();
 void test_cases(); // temp
-void input_handler(userInput input);
 
 int main() {
     test_cases();
-    exit(0); // temp
+
     // User Interface
-    enum a {INIT, INPUT_TYPE, ALGO_TYPE, NEXT_ACTION, EXIT, CONFIRM_EXIT};
+    struct userInput {
+        char c, i, a, n;
+        short int s;
+    };
+    enum a {INIT, INPUT_TYPE, ALGO_TYPE, HANDLE_INPUT, NEXT_ACTION, EXIT, CONFIRM_EXIT};
     userInput input{INIT};
 
     while (input.c != CONFIRM_EXIT) {
@@ -72,17 +72,17 @@ int main() {
                     switch (tolower(input.a)) {
                         case 'd': {
                             cout << "Dijkstra's selected!\n";
-                            input_handler(input);
+                            input.c = HANDLE_INPUT;
                             break;
                         }
                         case 'a': {
                             cout << "A* selected!\n";
-                            input_handler(input);
+                            input.c = HANDLE_INPUT;
                             break;
                         }
                         case 'b': {
                             cout << "Bellman-Ford selected!\n";
-                            input_handler(input);
+                            input.c = HANDLE_INPUT;
                             break;
                         }
                         case 'x': {
@@ -100,11 +100,15 @@ int main() {
                 }
 
                 else {
-                    input_handler(input);
+                    input.c = HANDLE_INPUT;
+                    break;
                 }
 
                 input.c = NEXT_ACTION;
                 break;
+            }
+            case HANDLE_INPUT: {
+
             }
             case NEXT_ACTION: {
                 cout << "What would you like to do next?\n";
@@ -160,17 +164,17 @@ void welcome() {
 
 void test_cases() {
     cout << "debugs:test0";
-    Graph myFirstGraph = Graph(4);
+    Graph myFirstGraph = Graph(10);
     int t = myFirstGraph.get_count();
     cout << "\n# of vtxs: " << t;
     myFirstGraph.print_graph();
 
     cout << '\n' << "dijkstra's!!\n";
-    myFirstGraph.set_edge(3, 0, 1); myFirstGraph.set_edge(11, 0, 2);
+    /*myFirstGraph.set_edge(3, 0, 1); myFirstGraph.set_edge(11, 0, 2);
     myFirstGraph.set_edge(2, 0, 3); myFirstGraph.set_edge(7, 1, 2);
     myFirstGraph.set_edge(4, 2, 3);
     myFirstGraph.print_graph();
-    /*
+    */
     myFirstGraph.set_edge(2, 0, 1);
     myFirstGraph.set_edge(3, 0, 2);
     myFirstGraph.set_edge(1, 1, 3);
@@ -186,7 +190,7 @@ void test_cases() {
     myFirstGraph.set_edge(4, 6, 8);
     myFirstGraph.set_edge(3, 6, 9);
     myFirstGraph.print_graph();
-*/
+
     dijkstra(myFirstGraph, 0);
     cout << '\n';
     myFirstGraph.print_graph();
@@ -194,7 +198,8 @@ void test_cases() {
     bellman_ford(myFirstGraph, 0);
 
 }
-                    
+
+/* GETTING RID OF THIS
 void input_handler(userInput input) {
     cout << input.i << input.a; // c, n is unused in this handler
 
@@ -217,7 +222,7 @@ void input_handler(userInput input) {
             Graph g(input.s);
             
 
-            input.c = 3; // NEXT_ACTION
+            input.c = 4; // NEXT_ACTION
         }
         else {
             cout << "Invalid vertex count!\n";
@@ -226,4 +231,4 @@ void input_handler(userInput input) {
             input.c = 1; // aka INPUT_TYPE
         }
     }
-}
+}*/

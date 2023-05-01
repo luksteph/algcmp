@@ -11,8 +11,8 @@ public:
     explicit Graph(int n);                               // constructor
     bool adjmtx_init();                         // fill adjacency matrix with infinite edge lengths
     bool adjmtx_rand(int seed) const;
-    bool set_edge(int length, int x, int y);    // setter for edge length
-    int get_count();                            // retrieve vertex count
+    bool set_edge(int length, int r, int c);    // setter for edge length
+    int get_count() const;                            // retrieve vertex count
     int get_edge(int r, int c);
     void print_graph();                         // Print out generalized graph
     ~Graph();
@@ -21,18 +21,16 @@ public:
 Graph::Graph(int n) { // Constructor with parameters
     vertex_count = n;
     adjmtx_init();
-    cout << "test1";
 }
 
-int Graph::get_count() { // getter for vertex count
+int Graph::get_count() const { // getter for vertex count
     return vertex_count;
 }
 
 bool Graph::set_edge(int length, int r, int c) { // x is which col, y is which row
     // format length var
     if (length > 999) length = 999;
-    if (length < 0) length = 0;
-    cout << "\n" << length << "\n";
+    if (length < -999) length = -999;
     // set edge, return true if it worked
     if (c >= r && c < vertex_count && r < vertex_count) {
         adj_mtx[r][c] = length;
@@ -44,16 +42,13 @@ bool Graph::set_edge(int length, int r, int c) { // x is which col, y is which r
 
 bool Graph::adjmtx_init() { // Initialize adjacency matrix with all values infinite, return true if worked
     vector <int> inf_vector;
-    cout << "test2";
     for (int i = 0; i < vertex_count; i++) {
         inf_vector.push_back(INF);
-        cout << i;
     }
     for (int j = 0; j < vertex_count; j++) {
         adj_mtx.push_back(inf_vector);
-        cout << j;
+
     }
-    cout << "test3";
     if (adj_mtx[vertex_count-1][vertex_count-1] == INF) return true;
     else return false;
 }
