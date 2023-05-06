@@ -1,24 +1,34 @@
 #ifndef INC_230FINAL_GRAPH_UTIL_H
 #define INC_230FINAL_GRAPH_UTIL_H
 #define INF INT_MAX
+#include <iomanip>
 using namespace std;
 
 class Graph {
 private:
-    int vertex_count = 0;
+    int vertex_count = 1;
     vector <vector <int>> adj_mtx; //declare a 2d adjacency matrix
 public:
-    explicit Graph(int n);                               // constructor
+    explicit Graph(int n);                      // constructor
+    explicit Graph();
+    void set_count(short n);
     bool adjmtx_init();                         // fill adjacency matrix with infinite edge lengths
-    bool adjmtx_rand(int seed) const;
+    bool adjmtx_rand(int seed);
     bool set_edge(int length, int r, int c);    // setter for edge length
-    int get_count() const;                            // retrieve vertex count
+    int get_count() const;                      // retrieve vertex count
     int get_edge(int r, int c);
     void print_graph();                         // Print out generalized graph
     ~Graph();
 };
 
 Graph::Graph(int n) { // Constructor with parameters
+    vertex_count = n;
+    adjmtx_init();
+}
+
+Graph::Graph() = default; // Default constructor
+
+void Graph::set_count(short n) { // setter for vtx count
     vertex_count = n;
     adjmtx_init();
 }
@@ -53,12 +63,17 @@ bool Graph::adjmtx_init() { // Initialize adjacency matrix with all values infin
     else return false;
 }
 
-bool Graph::adjmtx_rand(int seed) const { // Fill adjacency matrix with all values randomized
+bool Graph::adjmtx_rand(int seed) { // Fill adjacency matrix with all values randomized
     srand(seed);
-    int random = rand();
-    cout << random;
     for (int i = 0; i < vertex_count; i++) {
-        for (int j = 0; j <= i; j++) {
+        for (int j = i; j < vertex_count; j++) {
+            if (i == j) { // no loops (diagonal = 0)
+                adj_mtx[i][j] = 0;
+            } else if (rand() % 2 == 0) { // 50% chance of being INF
+                adj_mtx[i][j] = INF;
+            } else { // 50% chance of being a random number between 0 and 30
+                adj_mtx[i][j] = rand() % 31;
+            }
         }
     }
     return true;
@@ -69,7 +84,7 @@ void Graph::print_graph() {
     for (int i = 0; i < vertex_count; ++i) {
         for (int j = 0; j < vertex_count; ++j) {
             if (adj_mtx[i][j] == INF) cout << "INF ";
-            else cout << setw(3) << left << adj_mtx[i][j] << ' ';
+            else cout << std::setw(3) << left << adj_mtx[i][j] << ' ';
         }
         cout << endl;
     }

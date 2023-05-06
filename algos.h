@@ -1,10 +1,10 @@
 #ifndef algos
 #define algos
+#include <chrono>
 #include <vector>
 #include <queue>
 #include "graph_util.h"
 #define INF INT_MAX
-
 
 // Helper Functions and Definitions
 typedef pair<int, int> intpair;
@@ -20,8 +20,9 @@ std::vector<int> get_adj_vert(Graph& graph, int v, vector<bool> &visited) {
 
 // Algorithms
 // Dijkstra's start
-void dijkstra (Graph& graph, const int source) { // O(nlogn)
+void dijkstra (Graph& graph, const short source) { // O(nlogn)
     cout << "Dijkstra's Algorithm started!\n";
+    auto start = std::chrono::high_resolution_clock::now();
     //  setup
     vector<int> dist(graph.get_count(), INT_MAX); std::priority_queue<intpair, std::vector<intpair>, std::greater<>> q;
     vector<bool> visited(graph.get_count(), false);
@@ -51,18 +52,16 @@ void dijkstra (Graph& graph, const int source) { // O(nlogn)
     for (int i = 0; i < graph.get_count(); i++) {
         cout << "Distance from source to vertex " << i << " is " << dist[i] << '\n';
     }
+    auto stop = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
+    cout << "Time taken: "<< duration.count() << " microseconds." << endl;
 }
 // END Dijkstra's
 
-// A* Start
-void a_star(const std::vector<std::vector<int>>& graph, const std::vector<int>& heuristic, const int n, const int source) {
-    cout << "A* placeholder\n";
-}
-// END A*
-
 // Bellman-Ford Start
-void bellman_ford(Graph& graph, const int source) { // O(VE) aka "n^2"
+void bellman_ford(Graph& graph, const short source) { // O(VE) aka "n^2"
     cout << "Bellman-Ford Algorithm started!\n";
+    auto start = std::chrono::high_resolution_clock::now();
     // setup
     vector<long long> dist(graph.get_count(), LLONG_MAX); // Initialize all vertices as infinitely far from source
     dist[source] = 0; // Set source's distance from the source to 0
@@ -90,6 +89,9 @@ void bellman_ford(Graph& graph, const int source) { // O(VE) aka "n^2"
     for (int i = 0; i < graph.get_count(); i++) {
         cout << "Distance from source to vertex " << i << " is " << dist[i] << '\n';
     }
+    auto stop = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
+    cout << "Time taken: "<< duration.count() << " microseconds." << endl;
 }
 // END Bellman-Ford
 
