@@ -50,6 +50,7 @@ bool Graph::set_edge(int length, int r, int c) { // x is which col, y is which r
     else return false;
 }
 
+
 bool Graph::adjmtx_init() { // Initialize adjacency matrix with all values infinite, return true if worked
     vector <int> inf_vector;
     for (int i = 0; i < vertex_count; i++) {

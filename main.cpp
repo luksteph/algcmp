@@ -104,6 +104,7 @@ void validate_graph_input(Graph &g, char &input_choice, char &mode) {
     }
     short vtc; // vertex count
 
+
     cout << "How many vertices should the graph have?\n> ";
     cin >> vtc;
 

@@ -58,6 +58,7 @@ void dijkstra (Graph& graph, const short source) { // O(nlogn)
 }
 // END Dijkstra's
 
+
 // Bellman-Ford Start
 void bellman_ford(Graph& graph, const short source) { // O(VE) aka "n^2"
     cout << "Bellman-Ford Algorithm started!\n";
