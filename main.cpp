@@ -4,14 +4,12 @@
 using std::cout; using std::cin;
 
 void welcome();
-void test_cases(); // temp
 void validate_graph_input(Graph &g, char &input_choice, char &mode);
 void validate_algo_input(char &algo_choice, char &mode);
 void call_graph_function(Graph &g, char &algo_choice);
 void handle_next_choice(char &next_choice, char &mode);
 void fill_graph(Graph &g);
 enum a {INIT, INPUT_TYPE, ALGO_TYPE, HANDLE_INPUT, NEXT_ACTION, EXIT, CONFIRM_EXIT}; // define types of input
-
 
 int main() {
     char mode, input_choice, algo_choice, next_choice; // define variables for user selected input
@@ -25,7 +23,7 @@ int main() {
             case INIT: {
                 welcome(); // print welcome text
                 cout << "Welcome! Please follow the prompts to compare different graph traversal algorithms.\n";
-                cout << "(You may use 'x' at any prompt to go back.)\n";
+                cout << "(You may use 'x' at any prompt to go back.)\n"; // technically not true
                 mode = INPUT_TYPE;
                 break;
             }
@@ -74,6 +72,7 @@ int main() {
             }
         }
     }
+    exit(0);
 }
 
 void welcome() {
@@ -94,7 +93,7 @@ void welcome() {
 }
 
 void validate_graph_input(Graph &g, char &input_choice, char &mode) {
-    input_choice = tolower(input_choice);
+    input_choice = tolower(input_choice); short vtc; // vertex count
 
     switch (input_choice) {
         case 'i': cout << "Input mode selected!\n"; break;
@@ -102,12 +101,9 @@ void validate_graph_input(Graph &g, char &input_choice, char &mode) {
         case 'x': mode = EXIT; return;
         default: cout << "Invalid selection. Try again with i or g.\n"; return;
     }
-    short vtc; // vertex count
-
 
     cout << "How many vertices should the graph have?\n> ";
     cin >> vtc;
-
     g.set_count(vtc);
 
     if (input_choice == 'g') {
@@ -120,7 +116,6 @@ void validate_graph_input(Graph &g, char &input_choice, char &mode) {
 
     }
     else fill_graph(g);
-
     mode = ALGO_TYPE;
 }
 
@@ -149,16 +144,28 @@ void call_graph_function(Graph &g, char &algo_choice) {
 }
 
 void fill_graph(Graph &g) {
-    string command;
-
+    string command; int u, v, w;
+    cout << "\nCommand-line interface:\n";
     // Command Loop
     while (command != "exit") {
         cout << "> ";
         cin >> command;
 
+        if (command == "se") {
+            cin >> u >> v >> w;
+            if (g.set_edge(w, u, v)) cout << "Edge (" << u << ", " << v << ") set to " << w << " successfully.\n";
+            else cout << "Edge failed to set.\n";
+        }
 
+        else if (command == "ge") {
+            cin >> u >> v;
+            cout << g.get_edge(u, v) << '\n';
+        }
+
+        else if (command == "pg") g.print_graph();
+        else if (command != "exit") cout << "Unknown command.\n";
+        else cout << "Exiting command prompt.\n";
     }
-
 }
 
 void handle_next_choice(char &next_choice, char &mode) {
@@ -170,40 +177,4 @@ void handle_next_choice(char &next_choice, char &mode) {
         mode = NEXT_ACTION; // may be redundant
         next_choice = '\0'; // reset from invalid entered char
     }
-}
-
-void test_cases() {
-    cout << "debugs:test0";
-    Graph myFirstGraph = Graph(10);
-    int t = myFirstGraph.get_count();
-    cout << "\n# of vtxs: " << t;
-    myFirstGraph.print_graph();
-
-    cout << '\n' << "dijkstra's!!\n";
-    /*myFirstGraph.set_edge(3, 0, 1); myFirstGraph.set_edge(11, 0, 2);
-    myFirstGraph.set_edge(2, 0, 3); myFirstGraph.set_edge(7, 1, 2);
-    myFirstGraph.set_edge(4, 2, 3);
-    myFirstGraph.print_graph();
-    */
-    myFirstGraph.set_edge(2, 0, 1);
-    myFirstGraph.set_edge(3, 0, 2);
-    myFirstGraph.set_edge(1, 1, 3);
-    myFirstGraph.set_edge(4, 1, 4);
-    myFirstGraph.set_edge(2, 2, 3);
-    myFirstGraph.set_edge(5, 2, 5);
-    myFirstGraph.set_edge(3, 3, 4);
-    myFirstGraph.set_edge(4, 3, 5);
-    myFirstGraph.set_edge(5, 3, 6);
-    myFirstGraph.set_edge(1, 4, 6);
-    myFirstGraph.set_edge(2, 5, 7);
-    myFirstGraph.set_edge(1, 6, 7);
-    myFirstGraph.set_edge(4, 6, 8);
-    myFirstGraph.set_edge(3, 6, 9);
-    myFirstGraph.print_graph();
-
-    dijkstra(myFirstGraph, 1);
-    cout << '\n';
-    myFirstGraph.print_graph();
-    cout << '\n';
-    bellman_ford(myFirstGraph, 0);
 }

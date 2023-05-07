@@ -11,7 +11,6 @@ typedef pair<int, int> intpair;
 
 std::vector<int> get_adj_vert(Graph& graph, int v, vector<bool> &visited) {
     std::vector<int> adj_vert;
-
     for (int i = 0; i < graph.get_count(); i++) {
         if (graph.get_edge(v, i) < INF && !visited[i]) adj_vert.push_back(i);
     }
@@ -57,7 +56,6 @@ void dijkstra (Graph& graph, const short source) { // O(nlogn)
     cout << "Time taken: "<< duration.count() << " microseconds." << endl;
 }
 // END Dijkstra's
-
 
 // Bellman-Ford Start
 void bellman_ford(Graph& graph, const short source) { // O(VE) aka "n^2"

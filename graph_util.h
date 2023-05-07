@@ -9,16 +9,16 @@ private:
     int vertex_count = 1;
     vector <vector <int>> adj_mtx; //declare a 2d adjacency matrix
 public:
-    explicit Graph(int n);                      // constructor
-    explicit Graph();
-    void set_count(short n);
-    bool adjmtx_init();                         // fill adjacency matrix with infinite edge lengths
-    bool adjmtx_rand(int seed);
-    bool set_edge(int length, int r, int c);    // setter for edge length
-    int get_count() const;                      // retrieve vertex count
-    int get_edge(int r, int c);
-    void print_graph();                         // Print out generalized graph
-    ~Graph();
+    explicit Graph(int n);                      // Constructor with parameters
+    explicit Graph();                           // Default constructor
+    void set_count(short n);                    // Set vertex count
+    bool adjmtx_init();                         // Fill adjacency matrix with infinite edge lengths
+    bool adjmtx_rand(int seed);                 // Fill adjacency matrix with random values
+    bool set_edge(int length, int r, int c);    // Setter for edge length
+    int get_count() const;                      // Get vertex count
+    int get_edge(int r, int c);                 // Get edge length
+    void print_graph();                         // Print graph
+    ~Graph();                                   // Destructor
 };
 
 Graph::Graph(int n) { // Constructor with parameters
@@ -29,27 +29,29 @@ Graph::Graph(int n) { // Constructor with parameters
 Graph::Graph() = default; // Default constructor
 
 void Graph::set_count(short n) { // setter for vtx count
-    vertex_count = n;
-    adjmtx_init();
+    if (n>0) {
+        vertex_count = n;
+        adjmtx_init();
+    }
+    else cout << "Invalid value for vertex count.\n";
 }
 
 int Graph::get_count() const { // getter for vertex count
     return vertex_count;
 }
 
-bool Graph::set_edge(int length, int r, int c) { // x is which col, y is which row
+bool Graph::set_edge(int length, int r, int c) {
     // format length var
     if (length > 999) length = 999;
     if (length < -999) length = -999;
     // set edge, return true if it worked
-    if (c >= r && c < vertex_count && r < vertex_count) {
+    if (c >= 0 && r >= 0 && c < vertex_count && r < vertex_count) {
         adj_mtx[r][c] = length;
         adj_mtx[c][r] = length;
         return true;
     }
     else return false;
 }
-
 
 bool Graph::adjmtx_init() { // Initialize adjacency matrix with all values infinite, return true if worked
     vector <int> inf_vector;
@@ -70,10 +72,14 @@ bool Graph::adjmtx_rand(int seed) { // Fill adjacency matrix with all values ran
         for (int j = i; j < vertex_count; j++) {
             if (i == j) { // no loops (diagonal = 0)
                 adj_mtx[i][j] = 0;
-            } else if (rand() % 2 == 0) { // 50% chance of being INF
+            }
+            else if (rand() % 2 == 0) { // 50% chance of being INF
                 adj_mtx[i][j] = INF;
-            } else { // 50% chance of being a random number between 0 and 30
+                adj_mtx[j][i] = INF;
+            }
+            else { // 50% chance of being a random number between 0 and 30
                 adj_mtx[i][j] = rand() % 31;
+                adj_mtx[j][i] = adj_mtx[i][j];
             }
         }
     }
@@ -92,11 +98,11 @@ void Graph::print_graph() {
 }
 
 int Graph::get_edge(int r, int c){
-    return adj_mtx[r][c];
+    if (c >= 0 && r >= 0 && c < vertex_count && r < vertex_count) return adj_mtx[r][c];
+    else return NULL;
 }
 
 Graph::~Graph() {
-    cout << "\ndestructor placeholder\n";
+    cout << "\nGraph Destroyed!\n";
 }
-
 #endif //INC_230FINAL_GRAPH_UTIL_H
