@@ -19,7 +19,7 @@ std::vector<int> get_adj_vert(Graph& graph, int v, vector<bool> &visited) {
 
 // Algorithms
 // Dijkstra's start
-void dijkstra (Graph& graph, const short source) { // O(nlogn)
+void dijkstra (Graph& graph, const short source) { 
     cout << "Dijkstra's Algorithm started!\n";
     auto start = std::chrono::high_resolution_clock::now();
     //  setup
@@ -27,11 +27,6 @@ void dijkstra (Graph& graph, const short source) { // O(nlogn)
     vector<bool> visited(graph.get_count(), false);
     q.emplace(0, source);
     dist[source] = 0;
-
-    // while the queue is not empty
-    // for each reachable vertex from the current top of the queue (aka vtx with the shortest distance from src) {
-    // if (distance from source to current + current to the selected (current reachable vertex) < dist from source to reach)
-    // source to reach = distance from source to current + current to the selected
 
     while (!q.empty()) {    // O(logn)
         int u = q.top().second; // u is selected vertex
